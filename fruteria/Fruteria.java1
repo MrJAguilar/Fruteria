@@ -1,0 +1,161 @@
+
+
+package fruteria;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
+public class Producto {
+    private int id ;
+    private String nombre;
+    private double precioUnitario;
+    private int cantidad;
+    
+    public Producto(int id, String nombre, double precioUnitario, int cantidad){
+        this.id = id;
+        this.nombre = nombre;
+        this.precioUnitario = precioUnitario;
+        this.cantidad = cantidad;   
+    }
+
+    public double getSubtotal(){
+        return precioUnitario * cantidad;
+    }
+    
+    @Override
+    public String toString(){
+        return "ID: " + id + ", " + nombre + " -$" + precioUnitario + " x " + cantidad + " = $" + getSubtotal();
+    }
+    
+    //Getters 
+    public int getid(){ return id;}
+    public String getNombre(){return nombre;}
+    public double getPrecioUnitario(){return precioUnitario;}
+    public int getCantidad(){return cantidad;}
+}
+
+
+package fruteria;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
+
+
+public class Factura extends Catalogo {
+    private Usuario usuario;
+    private Proveedor proveedor;
+    private List<Producto> productos;
+    private double total;
+    private boolean activo;
+    
+public Factura(int id, Usuario usuario, Proveedor proveedor) {
+        super(id);
+        this.usuario = usuario;
+        this.proveedor = proveedor;
+        this.productos = new ArrayList<>();
+        this.total = 0.0;
+    }
+
+    public void agregarProducto(Producto producto) {
+        productos.add(producto);
+        total += producto.getSubtotal();
+    }
+
+    public void mostrarInfo() {
+        StringBuilder sb = new StringBuilder();
+        AbstractStringBuilder id = null;
+        sb.append("Factura ID: ").append(id).append("\n");
+        sb.append("Usuario: ").append(usuario.getNombre()).append(" ").append(usuario.getApellidos()).append("\n");
+        sb.append("Proveedor: ").append(proveedor).append("\n");
+        sb.append("Estado: ").append(activo ? "Activo" : "Inactivo").append("\n");
+        sb.append("Productos:\n");
+        for (Producto p : productos) {
+            sb.append(p.toString()).append("\n");
+        }
+        sb.append("Total: $").append(total);
+        JOptionPane.showMessageDialog(null, sb.toString());
+    }
+
+    public double getTotal() {
+        return total;
+    }
+}
+
+package fruteria;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
+public class GestorFacturas {
+    private List<Factura> facturas;
+
+    public GestorFacturas() {
+        facturas = new ArrayList<>();
+    }
+
+    public void agregarFactura(Factura factura) {
+        facturas.add(factura);
+        JOptionPane.showMessageDialog(null, "Factura agregada: " + factura.getId());
+    }
+
+    public void mostrarTodas() {
+        StringBuilder sb = new StringBuilder("Lista de Facturas:\n");
+        for (Factura f : facturas) {
+            sb.append("ID: ").append(f.getId()).append(", Total: $").append(f.getTotal()).append(", Activo: ").append(f.isActivo()).append("\n");
+        }
+        JOptionPane.showMessageDialog(null, sb.toString());
+    }
+
+    public void inactivarFactura(int id) {
+        for (Factura f : facturas) {
+            if (f.getId() == id) {
+                f.inactivar();
+                JOptionPane.showMessageDialog(null, "Factura inactivada: " + id);
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Factura no encontrada: " + id);
+    }
+}
+
+package fruteria;
+
+public class Fruteria {
+    public static void main(String[] args) {
+        // Registro de usuarios
+        RegistroUsuarios registro = new RegistroUsuarios();
+        registro.agregarUsuario();
+
+        // Ejemplo de proveedor y usuario
+        Proveedor proveedor = new Proveedor(1, "Frutas del Campo");
+        Usuario usuario = new Usuario(1, "Juan", "Pérez", "juanp", "1234", "Activo");
+
+        // Crear una factura
+        Factura factura = new Factura(1, usuario, proveedor);
+        factura.agregarProducto(new Producto(1, "Manzanas", 0.5, 10));
+        factura.agregarProducto(new Producto(2, "Plátanos", 0.3, 15));
+
+        // Gestionar facturas
+        GestorFacturas gestorFacturas = new GestorFacturas();
+        gestorFacturas.agregarFactura(factura);
+        factura.mostrarInfo(); // Mostrar detalles de la factura
+        gestorFacturas.mostrarTodas(); // Mostrar todas las facturas
+    }
+
+    private static class RegistroUsuarios {
+
+        public RegistroUsuarios() {
+        }
+
+        private void agregarUsuario() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+}
+
+
+

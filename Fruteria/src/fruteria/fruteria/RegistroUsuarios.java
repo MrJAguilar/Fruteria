@@ -45,4 +45,27 @@ class RegistroUsuarios {
             JOptionPane.showMessageDialog(null, "Error al guardar el usuario.");
         }
     }
+
+    //En esta parte se están leyendo los usuarios
+    public void leerUsuarios(){
+        try(DataInputStream entrada = new DataInputStream(new FileInputStream(FILE_NAME))){
+            while(true){
+                int id = entrada.readInt();
+                String nombre = entrada.readUTF();
+                String apellidos = entrada.readUTF();
+                String usuario = entrada.readUTF();
+                String password = entrada.readUTF();
+                String estado = entrada.readUTF();
+                Usuario user = new Usuario(id, nombre, apellidos, usuario, password, estado);
+                usuarios.add(user);
+            }
+        }catch(EOFException e){
+        }catch(IOException e){
+            JOptionPane.showMessageDialog(null, "Hay un error al leer los usuarios.");
+        }
+    }     
+    public List<Usuario> getUsuarios(){
+        return usuarios;
+    }    
+          
 }

@@ -8,8 +8,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 //-----------------Clase de Registros
-
-//Método para agregar a los usuariosclass RegistroUsuarios {
 class RegistroUsuarios {
     private static final String FILE_NAME = "cajanegra.dat";
     private List<Usuario> usuarios = new ArrayList<>();
@@ -22,9 +20,7 @@ class RegistroUsuarios {
             String apellidos = JOptionPane.showInputDialog("Ingrese los apellidos:");
             String usuario = JOptionPane.showInputDialog("Ingrese el usuario:");
             String password = JOptionPane.showInputDialog("Ingrese la contraseña:");
-            String estado = "Activo";
-
-            // Este valor lo coloqué para que esté por defecto
+            String estado = "Activo";  // Este valor lo coloqué para que esté por defecto
 
             Usuario nuevoUsuario = new Usuario(id, nombre, apellidos, usuario, password, estado);
             usuarios.add(nuevoUsuario);
@@ -46,10 +42,10 @@ class RegistroUsuarios {
         }
     }
 
-    //En esta parte se están leyendo los usuarios
-    public void leerUsuarios(){
-        try(DataInputStream entrada = new DataInputStream(new FileInputStream(FILE_NAME))){
-            while(true){
+    // En esta parte se están leyendo los usuarios
+    public void leerUsuarios() {
+        try (DataInputStream entrada = new DataInputStream(new FileInputStream(FILE_NAME))) {
+            while (true) {
                 int id = entrada.readInt();
                 String nombre = entrada.readUTF();
                 String apellidos = entrada.readUTF();
@@ -59,13 +55,26 @@ class RegistroUsuarios {
                 Usuario user = new Usuario(id, nombre, apellidos, usuario, password, estado);
                 usuarios.add(user);
             }
-        }catch(EOFException e){
-        }catch(IOException e){
+        } catch (EOFException e) {
+            // Se alcanza el final del archivo, no hace falta manejar nada aquí.
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Hay un error al leer los usuarios.");
         }
-    }     
-    public List<Usuario> getUsuarios(){
+    }
+
+    public void mostrarUsuarios() {
+        if (usuarios.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay usuarios registrados.");
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Usuario usuario : usuarios) {
+            sb.append(usuario.toString()).append("\n-------------------------\n");
+        }
+        JOptionPane.showMessageDialog(null, sb.toString());
+    }
+
+    public List<Usuario> getUsuarios() {
         return usuarios;
-    }    
-          
+    }
 }

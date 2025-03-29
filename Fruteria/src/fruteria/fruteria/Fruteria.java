@@ -13,10 +13,10 @@ public class Fruteria {
             opcion = mostrarMenu();
             switch (opcion) {
                 case 1:
-                    registro.agregarUsuario();
+                    registro.agregarUsuario();//Llamar a agregarUsuario, mostrarMétodo y agregar Proveedores y visualizarlos
                     break;
                 case 2:
-                    registro.mostrarUsuarios(); // Llama al método de RegistroUsuarios
+                    registro.mostrarUsuarios();
                     break;
                 case 3:
                     gestorProveedores.agregar(new Proveedor(Integer.parseInt(JOptionPane.showInputDialog("ID del proveedor:")), JOptionPane.showInputDialog("Nombre del proveedor:")));
